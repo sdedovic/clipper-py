@@ -20,7 +20,9 @@ clipper-py is tested and built against Python 3.8 on Arch Linux.
 - Boost.Python Headers (`libboost-python-dev`) compiled against version `1.72.0`
 
 ### From PyPI
-pip install pyclipper
+```bash
+pip install clipper-py
+```
 
 ### From source
 CMake required.
