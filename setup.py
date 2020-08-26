@@ -119,6 +119,12 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     keywords='clipper polygon clipping polygon-clipping',
+    url="https://github.com/sdedovic/clipper-py",
+    project_urls={
+        "Bug Tracker": "https://github.com/sdedovic/clipper-py/issues",
+        "Documentation": "https://github.com/sdedovic/clipper-py",
+        "Source Code": "https://github.com/sdedovic/clipper-py",
+    },
     classifiers=["Development Status :: 3 - Alpha",
                  "Environment :: Other Environment",
                  "Intended Audience :: Developers",
