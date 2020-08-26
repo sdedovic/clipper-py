@@ -1,6 +1,6 @@
 # About
-![](https://github.com/sdedovic/clipper-py/workflows/Publish%20to%20PyPI/badge.svg)
-![](https://img.shields.io/pypi/v/clipper-py)
+[![](https://github.com/sdedovic/clipper-py/workflows/Publish%20to%20PyPI/badge.svg)](#)
+[![](https://img.shields.io/pypi/v/clipper-py)](https://pypi.org/project/clipper-py/)
 
 clipper-py is a Boost.Python wrapper exposing the C++ translation of the [Angus Johnson's Clipper library](http://angusj.com/delphi/clipper.php) (6.4 Rev 495).
 
