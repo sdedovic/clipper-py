@@ -59,7 +59,7 @@ void wrap_clipper()
     class_<ClipperLib::TEdge>("TEdge");
     class_<ClipperLib::LocalMinimum>("LocalMinimum");
     class_<ClipperLib::ClipperBase>("ClipperBase");
-    class_<ClipperLib::Clipper, bases<ClipperLib::ClipperBase>>("Clipper", init<int>())
+    class_<ClipperLib::Clipper, bases<ClipperLib::ClipperBase> >("Clipper", init<int>())
             .def("add_paths", Clipper::add_paths)
             .def("execute", Clipper::execute);
 }

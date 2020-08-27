@@ -71,5 +71,13 @@ solution = clipper.execute('intersection', 'non-zero', 'non-zero')
 - cmake_example by Pybind is available under a [BSD-style license](https://github.com/pybind/cmake_example/blob/master/LICENSE)
 
 # Changelog
+## 0.1.2
+- Get MacOS builds working
+- Make things a little bit more portable on Linux
+
+## 0.1.0
+- update `setup.py` with urls
+- Publish to PyPI
+
 ## 0.0.1
 Initial project setup.
