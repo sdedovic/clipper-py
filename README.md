@@ -16,31 +16,40 @@ clipper-py is tested and built against Python 3.8 on Arch Linux.
 > Angus Johnson's Clipper library
 
 # Install
-### Dependencies
-- Boost.Python Headers (`libboost-python-dev`) compiled against version `1.72.0`
+## Dependencies
+### Linux
+- Boost.Python Headers (`libboost-python-dev`) compiled against version `1.67.0`
+#### Debian, Ubuntu
+```bash
+apt-get install libboost-python-dev
+```
+#### Arch
+```bash
+pacman -S libboost-python-dev
+```
+### Mac
+#### Homebrew
+```bash
+brew install boost-python3
+```
 
-### From PyPI
+## From PyPI
 ```bash
 pip install clipper-py
 ```
 
-### From source
+## From source
 CMake required.
 
-#### Clone the repository:
+### Install:
 ```bash
-git clone git@github.com:fonttools/pyclipper.git
-```
-
-#### Install:
-```bash
-python setup.py install
+pip3 install .
 ```
 
 # Usage
-### Basic clipping example (based on Angus Johnson's Clipper library):
+##  Basic clipping example (based on Angus Johnson's Clipper library):
 ```python
-from pyclipper import Path, Paths, Clipper, IntPoint
+from clipper_py import Path, Paths, Clipper, IntPoint
 
 subj = Paths()
 subj.push(Path().push(IntPoint(180, 200)).push(IntPoint(260, 200)).push(IntPoint(260, 150)).push(IntPoint(180, 150)))
@@ -56,13 +65,13 @@ clipper.add_paths(subj, 'subject', True)
 clipper.add_paths(clip, 'clip', True)
 solution = clipper.execute('intersection', 'non-zero', 'non-zero')
 
-# solution (a list of paths): [[[240, 200], [190, 200], [190, 150], [240, 150]], [[200, 190], [230, 190], [215, 160]]]
+# solution: [[[240, 200], [190, 200], [190, 150], [240, 150]], [[200, 190], [230, 190], [215, 160]]]
 ```
 
 # Authors
 - The Clipper library is written by Angus Johnson,
 - This readme was modified from the original written by various authors of the pyclipper library
-- The PyPI `setup.py` file was modified  from a CMake-based build example of the PyBind project
+- The PyPI `setup.py` file was modified from a CMake-based build example of the PyBind project
 
 # License
 - clipper-py is available under a [MIT license](http://opensource.org/licenses/MIT).
@@ -71,6 +80,10 @@ solution = clipper.execute('intersection', 'non-zero', 'non-zero')
 - cmake_example by Pybind is available under a [BSD-style license](https://github.com/pybind/cmake_example/blob/master/LICENSE)
 
 # Changelog
+## 0.1.3
+- Dynamically determine version of Python for Boost.Python headers
+- Minor cleanup
+
 ## 0.1.2
 - Get MacOS builds working
 - Make things a little bit more portable on Linux

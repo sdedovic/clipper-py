@@ -142,7 +142,7 @@ setup(
     ext_modules=[CMakeExtension('clipper_py')],
     data_files=[('clipper', get_cpp('clipper')),
                 ('clipper_py', get_cpp('clipper_py')),
-                ('', ['polyclipping.pc.cmakein', 'CMakeLists.txt'])],
+                ('', ['CMakeLists.txt'])],
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,
 )

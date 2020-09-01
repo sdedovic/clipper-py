@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
-PROJECT(polyclipping)
+PROJECT(clipper-py)
 
 IF (APPLE)
     INCLUDE(GNUInstallDirs)
@@ -16,9 +16,9 @@ SET(PYTHON_SRC
         clipper_py/int-point.cpp
         clipper_py/clipper-py.cpp)
 
-FIND_PACKAGE(Boost 1.60.0 REQUIRED)
-FIND_PACKAGE(Boost REQUIRED COMPONENTS python38)
 FIND_PACKAGE(Python3 COMPONENTS Development)
+FIND_PACKAGE(Boost 1.67.0 REQUIRED)
+FIND_PACKAGE(Boost REQUIRED COMPONENTS python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR})
 
 INCLUDE_DIRECTORIES(./clipper ./clipper_py ${Python3_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 ADD_LIBRARY(clipper_py SHARED ${PYTHON_SRC})
