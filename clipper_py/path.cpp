@@ -21,12 +21,6 @@ namespace Path {
 
     str repr(ClipperLib::Path const &path)
     {
-        str string = "Path( ";
-        for (int i = 0; i < path.size(); i++) {
-            ClipperLib::IntPoint point = path[i];
-            str point_str =  str("[" + str(point.X) + ", " +  str(point.Y) + "]");
-            string += (str("[" + str(path[i].X) + ","));
-        }
         return str("Path( size=" + str(path.size()) + " )");
     }
 }

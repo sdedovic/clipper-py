@@ -80,6 +80,11 @@ solution = clipper.execute('intersection', 'non-zero', 'non-zero')
 - cmake_example by Pybind is available under a [BSD-style license](https://github.com/pybind/cmake_example/blob/master/LICENSE)
 
 # Changelog
+## 0.1.4
+- Add `PolyTree`, `PolyNode`, `PolyNodes` types
+- Add `executeComplex`
+- Add `open_paths_from_polytree`. `closed_paths_from_polytree`, `polytree_to_paths`
+
 ## 0.1.3
 - Dynamically determine version of Python for Boost.Python headers
 - Minor cleanup

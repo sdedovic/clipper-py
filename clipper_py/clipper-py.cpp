@@ -14,4 +14,5 @@ BOOST_PYTHON_MODULE(_clipper_py)
     wrap_int_point();
     wrap_path();
     wrap_clipper();
+    wrap_poly_tree();
 }

@@ -14,6 +14,7 @@ SET(PYTHON_SRC
         clipper_py/clipper.cpp
         clipper_py/path.cpp
         clipper_py/int-point.cpp
+        clipper_py/poly-tree.cpp
         clipper_py/clipper-py.cpp)
 
 FIND_PACKAGE(Python3 COMPONENTS Development)

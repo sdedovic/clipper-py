@@ -3,7 +3,6 @@
 //
 
 #include <boost/python.hpp>
-#include <boost/python/implicit.hpp>
 
 #include "clipper-py.h"
 
@@ -52,6 +51,19 @@ namespace Clipper {
 
         return solution;
     }
+
+
+    ClipperLib::PolyTree executeComplex(ClipperLib::Clipper &clipper, std::string const &clipType, std::string const &subjFillType, std::string const &clipFillType)
+    {
+        ClipperLib::ClipType ct = clipType_from_str(clipType);
+        ClipperLib::PolyFillType sft = polyFillType_from_str(subjFillType);
+        ClipperLib::PolyFillType cft = polyFillType_from_str(clipFillType);
+        ClipperLib::PolyTree solution;
+
+        clipper.Execute(ct, solution, sft, cft);
+
+        return solution;
+    }
 }
 
 void wrap_clipper()
@@ -61,5 +73,10 @@ void wrap_clipper()
     class_<ClipperLib::ClipperBase>("ClipperBase");
     class_<ClipperLib::Clipper, bases<ClipperLib::ClipperBase> >("Clipper", init<int>())
             .def("add_paths", Clipper::add_paths)
-            .def("execute", Clipper::execute);
+            .def("execute", Clipper::execute)
+            .def("execute_complex", Clipper::executeComplex);
+
+    def("open_paths_from_polytree", ClipperLib::OpenPathsFromPolyTree);
+    def("closed_paths_from_polytree", ClipperLib::ClosedPathsFromPolyTree);
+    def("polytree_to_paths", ClipperLib::PolyTreeToPaths);
 }

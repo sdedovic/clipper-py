@@ -7,6 +7,7 @@
 
 void wrap_int_point();
 void wrap_path();
+void wrap_poly_tree();
 void wrap_clipper();
 
 #endif //CLIPPER_PYCLIPPER_H
