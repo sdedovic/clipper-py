@@ -64,6 +64,28 @@ namespace Clipper {
 
         return solution;
     }
+
+
+    ClipperLib::Paths get_open_paths(ClipperLib::PolyTree tree)
+    {
+        ClipperLib::Paths output;
+        ClipperLib::OpenPathsFromPolyTree(tree, output);
+        return output;
+    }
+
+    ClipperLib::Paths get_closed_paths(ClipperLib::PolyTree &tree)
+    {
+        ClipperLib::Paths output;
+        ClipperLib::ClosedPathsFromPolyTree(tree, output);
+        return output;
+    }
+
+    ClipperLib::Paths polytree_to_paths(ClipperLib::PolyTree &tree)
+    {
+        ClipperLib::Paths output;
+        ClipperLib::PolyTreeToPaths(tree, output);
+        return output;
+    }
 }
 
 void wrap_clipper()
@@ -76,7 +98,7 @@ void wrap_clipper()
             .def("execute", Clipper::execute)
             .def("execute_complex", Clipper::executeComplex);
 
-    def("open_paths_from_polytree", ClipperLib::OpenPathsFromPolyTree);
-    def("closed_paths_from_polytree", ClipperLib::ClosedPathsFromPolyTree);
-    def("polytree_to_paths", ClipperLib::PolyTreeToPaths);
+    def("open_paths_from_polytree", Clipper::get_open_paths);
+    def("closed_paths_from_polytree", Clipper::get_closed_paths);
+    def("polytree_to_paths", Clipper::polytree_to_paths);
 }

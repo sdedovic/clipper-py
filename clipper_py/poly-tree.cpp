@@ -53,10 +53,21 @@ namespace PolyNode {
         return node.Contour;
     }
 
+    std::string to_string(ClipperLib::PolyNode const &node) {
+        std::string value = std::string();
+
+        value += "PolyNode(";
+        value += "child_count=" + std::to_string(child_count(node)) + " ";
+        value += "is_open=" + std::to_string(is_open(node)) + " ";
+        value += "is_hole=" + std::to_string(is_hole(node));
+        value += ")";
+
+        return value;
+    }
+
     str repr(ClipperLib::PolyNode const &node)
     {
-        // TODO: repond with something better here
-        return str("PolyNode(  )");
+        return str(to_string(node));
     }
 }
 
@@ -70,12 +81,35 @@ namespace PolyTree {
     {
         return tree.Total();
     }
+
+    ClipperLib::Paths get_open_paths(ClipperLib::PolyTree &tree) {
+        ClipperLib::Paths paths;
+        ClipperLib::OpenPathsFromPolyTree(tree, paths);
+        return paths;
+    }
+
+    std::string to_string(ClipperLib::PolyTree const &tree) {
+        std::string value = std::string();
+
+        value += "PolyTree(";
+        value += "child_count=" + std::to_string(PolyNode::child_count(tree)) + " ";
+        value += "is_open=" + std::to_string(PolyNode::is_open(tree)) + " ";
+        value += "is_hole=" + std::to_string(PolyNode::is_hole(tree));
+        value += ")";
+
+        return value;
+    }
+
+    str repr(ClipperLib::PolyTree const &tree)
+    {
+        return str(to_string(tree));
+    }
 }
 
 namespace PolyNodes {
     str repr(ClipperLib::PolyNodes const &nodes)
     {
-        return str("PolyNodes( size=" + str(nodes.size()) + " )");
+        return str(str("PolyNodes( size=") + str(nodes.size()) + str(" )"));
     }
 }
 
@@ -97,16 +131,11 @@ void wrap_poly_tree()
             .def("__str__", PolyNodes::repr)
             .def("__repr__", PolyNodes::repr);
 
-    class_<ClipperLib::PolyTree>("PolyTree")
-            .def("__str__", PolyNode::repr)
-            .def("__repr__", PolyNode::repr)
-            .add_property("contour", PolyNode::contour)
-            .add_property("childs", PolyNode::childs)
-            .add_property("parent", PolyNode::parent)
-            .def("child_count", PolyNode::child_count)
-            .def("is_open", PolyNode::is_open)
-            .def("is_hole", PolyNode::is_hole)
-            .def("get_next", PolyNode::get_next)
+    class_<ClipperLib::PolyTree, bases<ClipperLib::PolyNode> >("PolyTree")
+            .def("__str__", PolyTree::repr)
+            .def("__repr__", PolyTree::repr)
             .def("get_first", PolyTree::get_first)
-            .def("total", PolyTree::total);
+            .def("total", PolyTree::total)
+            .def("get_open_paths", PolyTree::get_open_paths,
+                 return_value_policy<return_by_value>());
 }
