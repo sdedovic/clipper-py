@@ -80,6 +80,9 @@ solution = clipper.execute('intersection', 'non-zero', 'non-zero')
 - cmake_example by Pybind is available under a [BSD-style license](https://github.com/pybind/cmake_example/blob/master/LICENSE)
 
 # Changelog
+## 0.1.5
+- Fix complex (`PolyTree`-based) clipping to actually work kinda
+
 ## 0.1.4
 - Add `PolyTree`, `PolyNode`, `PolyNodes` types
 - Add `executeComplex`

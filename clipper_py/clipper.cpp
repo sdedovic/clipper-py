@@ -53,16 +53,24 @@ namespace Clipper {
     }
 
 
-    ClipperLib::PolyTree executeComplex(ClipperLib::Clipper &clipper, std::string const &clipType, std::string const &subjFillType, std::string const &clipFillType)
+    ClipperLib::Paths executeComplex(ClipperLib::Clipper &clipper, std::string const &clipType, std::string const &subjFillType, std::string const &clipFillType, std::string const &returnType)
     {
         ClipperLib::ClipType ct = clipType_from_str(clipType);
         ClipperLib::PolyFillType sft = polyFillType_from_str(subjFillType);
         ClipperLib::PolyFillType cft = polyFillType_from_str(clipFillType);
-        ClipperLib::PolyTree solution;
 
+        ClipperLib::PolyTree solution;
         clipper.Execute(ct, solution, sft, cft);
 
-        return solution;
+        ClipperLib::Paths solutionPaths;
+        if (returnType == "open")
+            ClipperLib::OpenPathsFromPolyTree(solution, solutionPaths);
+        else if (returnType == "closed")
+            ClipperLib::ClosedPathsFromPolyTree(solution, solutionPaths);
+        else
+            ClipperLib::PolyTreeToPaths(solution, solutionPaths);
+
+        return solutionPaths;
     }
 }
 
@@ -75,8 +83,4 @@ void wrap_clipper()
             .def("add_paths", Clipper::add_paths)
             .def("execute", Clipper::execute)
             .def("execute_complex", Clipper::executeComplex);
-
-    def("open_paths_from_polytree", ClipperLib::OpenPathsFromPolyTree);
-    def("closed_paths_from_polytree", ClipperLib::ClosedPathsFromPolyTree);
-    def("polytree_to_paths", ClipperLib::PolyTreeToPaths);
 }

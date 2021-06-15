@@ -4,7 +4,6 @@
 
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <boost/python/implicit.hpp>
 
 #include "clipper-py.h"
 
@@ -19,9 +18,38 @@ namespace Path {
         return path;
     }
 
-    str repr(ClipperLib::Path const &path)
+    std::string to_string(const ClipperLib::Path& path) {
+        if (path.empty())
+            return "Path(EMPTY)";
+
+        std::string value = std::string();
+        value += "Path(";
+        for( int i = 0; i < path.size() - 1; i++) {
+            ClipperLib::IntPoint point = path.at(i);
+            std::string x = std::to_string(point.X);
+            std::string y = std::to_string(point.Y);
+            value += "[";
+            value += x;
+            value += ",";
+            value += y;
+            value += "], ";
+        }
+        ClipperLib::IntPoint point = path.at(path.size() - 1);
+        std::string x = std::to_string(point.X);
+        std::string y = std::to_string(point.Y);
+        value += "[";
+        value += x;
+        value += ",";
+        value += y;
+        value += "]";
+
+        value += ")";
+        return value;
+    }
+
+    str repr(const ClipperLib::Path& path)
     {
-        return str("Path( size=" + str(path.size()) + " )");
+        return str(to_string(path));
     }
 }
 
@@ -32,9 +60,26 @@ namespace Paths {
         return paths;
     }
 
+    std::string to_string(const ClipperLib::Paths& paths) {
+        if (paths.empty())
+            return "Paths(EMPTY)";
+
+        std::string value = std::string();
+        value += "Paths(";
+        for (int i = 0; i < paths.size() - 1; i++)
+        {
+            value += Path::to_string(paths.at(i));
+            value += ", ";
+        }
+        value += Path::to_string(paths.at(paths.size() - 1));
+
+        value += ")";
+        return value;
+    }
+
     str repr(ClipperLib::Paths const &paths)
     {
-        return str("Paths( size=" + str(paths.size()) + " )");
+        return str(to_string(paths));
     }
 }
 
