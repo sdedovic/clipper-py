@@ -33,9 +33,9 @@ namespace PolyNode {
         return node.ChildCount();
     }
 
-    ClipperLib::PolyNode get_next(ClipperLib::PolyNode const &node)
+    ClipperLib::PolyNode *get_next(ClipperLib::PolyNode const &node)
     {
-        return *node.GetNext();
+        return node.GetNext();
     }
 
     ClipperLib::PolyNodes childs(ClipperLib::PolyNode const &node)
@@ -43,9 +43,9 @@ namespace PolyNode {
         return node.Childs;
     }
 
-    ClipperLib::PolyNode parent(ClipperLib::PolyNode const &node)
+    ClipperLib::PolyNode *parent(ClipperLib::PolyNode const &node)
     {
-        return *node.Parent;
+        return node.Parent;
     }
 
     ClipperLib::Path contour(ClipperLib::PolyNode const &node)
@@ -53,7 +53,8 @@ namespace PolyNode {
         return node.Contour;
     }
 
-    std::string to_string(ClipperLib::PolyNode const &node) {
+    std::string to_string(ClipperLib::PolyNode const &node)
+    {
         std::string value = std::string();
 
         value += "PolyNode(";
@@ -72,9 +73,9 @@ namespace PolyNode {
 }
 
 namespace PolyTree {
-    ClipperLib::PolyNode get_first(ClipperLib::PolyTree const &tree)
+    ClipperLib::PolyNode *get_first(ClipperLib::PolyTree const &tree)
     {
-        return *tree.GetFirst();
+        return tree.GetFirst();
     }
 
     int total(ClipperLib::PolyTree const &tree)
@@ -82,13 +83,8 @@ namespace PolyTree {
         return tree.Total();
     }
 
-    ClipperLib::Paths get_open_paths(ClipperLib::PolyTree &tree) {
-        ClipperLib::Paths paths;
-        ClipperLib::OpenPathsFromPolyTree(tree, paths);
-        return paths;
-    }
-
-    std::string to_string(ClipperLib::PolyTree const &tree) {
+    std::string to_string(ClipperLib::PolyTree const &tree)
+    {
         std::string value = std::string();
 
         value += "PolyTree(";
@@ -115,27 +111,25 @@ namespace PolyNodes {
 
 void wrap_poly_tree()
 {
-    class_<ClipperLib::PolyNode>("PolyNode")
+    class_<ClipperLib::PolyNode, std::shared_ptr<ClipperLib::PolyNode> >("PolyNode")
             .def("__str__", PolyNode::repr)
             .def("__repr__", PolyNode::repr)
             .add_property("contour", PolyNode::contour)
             .add_property("childs", PolyNode::childs)
-            .add_property("parent", PolyNode::parent)
+            .add_property("parent", make_function(PolyNode::parent, return_internal_reference<>()))
             .def("child_count", PolyNode::child_count)
             .def("is_open", PolyNode::is_open)
             .def("is_hole", PolyNode::is_hole)
-            .def("get_next", PolyNode::get_next);
+            .def("get_next", PolyNode::get_next, return_internal_reference<>());
 
     class_<ClipperLib::PolyNodes>("PolyNodes")
             .def(vector_indexing_suite<ClipperLib::PolyNodes>())
             .def("__str__", PolyNodes::repr)
             .def("__repr__", PolyNodes::repr);
 
-    class_<ClipperLib::PolyTree, bases<ClipperLib::PolyNode> >("PolyTree")
+    class_<ClipperLib::PolyTree, std::shared_ptr<ClipperLib::PolyTree>, bases<ClipperLib::PolyNode> >("PolyTree")
             .def("__str__", PolyTree::repr)
             .def("__repr__", PolyTree::repr)
-            .def("get_first", PolyTree::get_first)
-            .def("total", PolyTree::total)
-            .def("get_open_paths", PolyTree::get_open_paths,
-                 return_value_policy<return_by_value>());
+            .def("get_first", PolyTree::get_first, return_internal_reference<>())
+            .def("total", PolyTree::total);
 }

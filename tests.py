@@ -2,7 +2,37 @@ import unittest
 from clipper_py import *
 
 
-class GoodEnoughTest(unittest.TestCase):
+class PolyTreeTest(unittest.TestCase):
+    def test_polynode(self):
+        from clipper_py import PolyNode
+
+        node = PolyNode()
+
+        self.assertEqual("PolyNode(child_count=0 is_open=0 is_hole=1)", str(node))
+        self.assertEqual(True, node.is_hole())
+        self.assertEqual(False, node.is_open())
+        self.assertEqual(None, node.get_next())
+        self.assertEqual("PolyNodes( size=0 )", str(node.childs))
+        self.assertEqual(None, node.parent)
+        self.assertEqual(str(Path()), str(node.contour))
+        self.assertEqual(0, node.child_count())
+
+    def test_polytree(self):
+        from clipper_py import PolyTree
+
+        tree = PolyTree()
+
+        self.assertEqual("PolyTree(child_count=0 is_open=0 is_hole=1)", str(tree))
+        self.assertEqual(True, tree.is_hole())
+        self.assertEqual(False, tree.is_open())
+        self.assertEqual(None, tree.get_next())
+        self.assertEqual("PolyNodes( size=0 )", str(tree.childs))
+        self.assertEqual(None, tree.parent)
+        self.assertEqual(str(Path()), str(tree.contour))
+        self.assertEqual(0, tree.child_count())
+
+
+class ClipperTest(unittest.TestCase):
     def validate_installed_version(self):
         import clipper_py
         self.assertEqual("0.1.5", clipper_py.__version__)
@@ -29,23 +59,18 @@ class GoodEnoughTest(unittest.TestCase):
 
     def test_line(self):
         subj1 = Path()
-        for x, y in [(180, 200), (260, 200), (260, 150), (180, 150)]:
+        for x, y in [(0, 0), (100, 100)]:
             subj1.append(IntPoint(x, y))
 
         clip = Path()
-        for x, y in [(190, 210), (240, 210), (240, 130), (190, 130)]:
+        for x, y in [(20, 20), (80, 20), (80, 80), (20, 80)]:
             clip.append(IntPoint(x, y))
-
-        print(subj1)
-        print(clip)
 
         c = Clipper(0)
         c.add_paths(Paths().push(subj1), 'subject', False)
         c.add_paths(Paths().push(clip), 'clip', True)
 
-        solution = c.execute_complex("difference", 'non-zero', 'non-zero')
+        solution = c.execute_complex("difference", 'non-zero', 'non-zero', 'open')
+        solution = [[(point[0], point[1]) for point in paths] for paths in solution]
 
-        # open_paths_from_polytree(solution)
-        # print(paths)
-        # print(closed_paths_from_polytree(solution))
-        print(solution.get_open_paths())
+        self.assertEqual(solution, [[(80, 80), (100, 100)], [(0, 0), (20, 20)]])
